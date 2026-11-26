@@ -1,1 +1,78 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hotel Food Rescue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Noto+Sans+Malayalam:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f6f0;--card:#fff;--ink:#15241c;--mute:#55665c;--green:#1f5a3f;--gold:#f0b323;--rust:#b4432d;--line:#d5dfd3;--ok:#e3f1e5;--farm:#fbf0d3;--bad:#f8e2dc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Bricolage Grotesque",system-ui,sans-serif}
+.wrap{max-width:960px;margin:auto;padding:0 18px}header{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-weight:800;font-size:19px}.logo span{color:var(--green)}.ml{font-family:"Noto Sans Malayalam",sans-serif;color:var(--mute)}
+h1{font-size:clamp(36px,8vw,64px);line-height:1.02;letter-spacing:-.04em;margin:20px 0 12px;font-weight:800}.sub{color:var(--mute);max-width:60ch}
+.router{display:grid;gap:18px;margin:28px 0 10px}@media(min-width:760px){.router,.lanes{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:18px}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}input,select{width:100%;font:inherit;color:inherit;background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}.seg button{flex:1;min-width:120px;font:inherit;font-weight:600;padding:10px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--green);border-color:var(--green);color:white}
+.verdict{border-radius:14px;padding:20px;min-height:100%;display:flex;flex-direction:column;justify-content:center;gap:8px;border:1.5px solid var(--line)}
+.verdict.people{background:var(--ok)}.verdict.animal{background:var(--farm)}.verdict.compost{background:var(--bad)}
+.verdict h2{margin:0;font-size:28px;line-height:1.1}.verdict p{margin:0}.btn{font:inherit;font-weight:800;border:0;border-radius:10px;padding:13px 18px;background:var(--gold);color:#241a00;cursor:pointer;margin-top:10px}
+.stats{display:flex;gap:26px;flex-wrap:wrap;margin:24px 0 6px}.stats b{font-size:32px;display:block;line-height:1}.stats small,.meta{color:var(--mute)}
+h3{font-size:26px;margin:38px 0 6px}.claimas{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}.claimas select{width:auto;min-width:220px}
+.lanes{display:grid;gap:18px}.lane h4{margin:0 0 10px;font-size:19px}.item{border-radius:12px;padding:14px;margin-bottom:10px;border:1.5px solid var(--line);background:var(--card)}
+.item.people{border-left:6px solid var(--green)}.item.animal{border-left:6px solid var(--gold)}.item strong{display:block;font-size:17px}.item button{font:inherit;font-weight:600;margin-top:8px;padding:8px 12px;border-radius:8px;border:1.5px solid var(--green);background:transparent;color:var(--green);cursor:pointer}
+.item.done{opacity:.65}.tag{display:inline-block;margin-top:8px;font-weight:600;color:var(--green)}.empty{color:var(--mute);padding:14px;border:1.5px dashed var(--line);border-radius:12px}
+.rules{padding-left:20px;max-width:70ch}.rules li{margin:8px 0}footer{color:var(--mute);font-size:14px;padding:30px 0 40px}
+@media(max-width:420px){.row{grid-template-columns:1fr}.claimas select{width:100%}}
+</style>
+</head>
+<body><main class="wrap">
+<header><div class="logo">Hotel Food <span>Rescue</span></div><div class="ml">ഭക്ഷണം പാഴാക്കാതെ</div></header>
+<h1>Good food to children. Scraps to farms. Nothing to the bin.</h1>
+<p class="sub ml">നല്ല ഭക്ഷണം അനാഥാലയങ്ങളിലേക്ക്, ബാക്കി വന്നത് ഫാമുകളിലേക്ക്.</p>
+<p class="sub">Tell us what is left over. We help sort it responsibly, then post it for pickup.</p>
+<section class="router">
+<div class="card">
+<label for="item">Food item</label><input id="item" placeholder="e.g. Veg biriyani" value="Veg biriyani">
+<div class="row"><div><label for="hotel">Hotel name</label><input id="hotel" placeholder="Your hotel" value="Hotel Sagar"></div><div><label for="qty">Quantity (kg)</label><input id="qty" type="number" min="1" value="10"></div></div>
+<label for="hrs">Cooked how many hours ago?</label><input id="hrs" type="number" min="0" max="48" value="2">
+<label id="srcl">Where is it from?</label><div class="seg" role="group" aria-labelledby="srcl"><button type="button" data-src="kitchen" aria-pressed="true">Never served</button><button type="button" data-src="plate" aria-pressed="false">Guests’ plates</button></div>
+<label id="condl">How does it look and smell?</label><div class="seg" role="group" aria-labelledby="condl"><button type="button" data-cond="fine" aria-pressed="true">Looks and smells fine</button><button type="button" data-cond="spoiled" aria-pressed="false">Sour, slimy or mouldy</button></div>
+</div><div id="verdict" class="verdict people" aria-live="polite"></div></section>
+<div class="stats"><div><b id="s1">0</b><small>kg given to children</small></div><div><b id="s2">0</b><small>kg sent to farms</small></div><div><b id="s3">0</b><small>open listings</small></div></div>
+<h3>Pickup board</h3><div class="claimas"><label for="partner" style="margin:0">Claim as</label><select id="partner"></select></div>
+<div class="lanes"><section class="lane"><h4>For children (orphanages)</h4><div id="lp"></div></section><section class="lane"><h4>For animals (farms)</h4><div id="la"></div></section></div>
+<h3>Why the sorting works this way</h3>
+<ul class="rules"><li>Only suitable, safely handled food that has never been served should be considered for people.</li><li>Food from guests’ plates must never be redistributed to people.</li><li>Food that appears spoiled must not be given to people or animals. Use an approved compost or biogas route.</li><li>Food donation and animal-feed decisions must follow local food-safety and public-health rules. When unsure, do not donate it.</li></ul>
+<footer>Demonstration website with sample partners. Real pickups require verified organisations, safe handling and local food-safety checks.</footer>
+</main>
+<script>
+const KEY="hfr-demo-v1", state={src:"kitchen",cond:"fine"};
+const PEOPLE=["Snehabhavan Orphanage","Asha Children’s Home"], FARMS=["Green Valley Farm","Meenakshi Farm"];
+const $=id=>document.getElementById(id);
+const seed=()=>[
+{id:1,hotel:"Hotel Malabar",item:"Chapati and vegetable curry",kg:12,lane:"people",by:""},
+{id:2,hotel:"Coastal Inn",item:"Rice and sambar",kg:8,lane:"people",by:""},
+{id:3,hotel:"Hotel Sagar",item:"Vegetable peels",kg:20,lane:"animal",by:""}];
+let data;try{data=JSON.parse(localStorage.getItem(KEY))||seed()}catch(e){data=seed()}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
+const route=()=>{const h=+$("hrs").value||0;if(state.cond==="spoiled")return"compost";if(state.src==="plate"||h>4)return"animal";return"people"};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function showVerdict(){const r=route(),v=$("verdict"),h=+$("hrs").value||0,kg=+$("qty").value||0;v.className="verdict "+r;
+const info={people:["For a verified food-donation partner","This is only a preliminary suggestion. Confirm safe time-temperature handling and local food-safety requirements before donating."],animal:["Do not distribute to people","Food-waste animal feed is subject to local rules. Contact an approved farm or waste handler before transfer."],compost:["Do not donate this food","If food may be spoiled or unsafe, keep it out of the donation chain and use an approved waste route."]}[r];
+v.innerHTML=`<h2>${info[0]}</h2><p>${info[1]}</p>`+(r==="compost"?"":'<button class="btn" id="post" type="button">Post for pickup</button>');
+if($("post"))$("post").onclick=post}
+function post(){const r=route();if(r==="compost")return;const kg=Math.max(0,+$("qty").value||0);if(!kg){alert("Enter a valid quantity.");return}
+data.unshift({id:Date.now(),hotel:$("hotel").value.trim()||"A hotel",item:$("item").value.trim()||"Food",kg,lane:r,by:""});save();render();$("lp").scrollIntoView({behavior:"smooth",block:"center"})}
+function fillPartners(){$("partner").innerHTML="<optgroup label='Orphanages'>"+PEOPLE.map(x=>`<option>${esc(x)}</option>`).join("")+"</optgroup><optgroup label='Farms'>"+FARMS.map(x=>`<option>${esc(x)}</option>`).join("")+"</optgroup>"}
+function render(){["people","animal"].forEach(l=>{const xs=data.filter(x=>x.lane===l),el=$(l==="people"?"lp":"la");el.innerHTML=xs.length?xs.map(x=>`<div class="item ${l} ${x.by?"done":""}"><strong>${esc(x.item)}</strong><span class="meta">${esc(x.hotel)} · ${x.kg} kg</span><br>${x.by?`<span class="tag">Claimed by ${esc(x.by)}</span>`:`<button type="button" data-id="${x.id}">Claim this pickup</button>`}</div>`).join(""):'<div class="empty">Nothing posted yet. Add a listing above.</div>'});
+let p=0,a=0,o=0;data.forEach(x=>{if(x.by){if(x.lane==="people")p+=x.kg;else a+=x.kg}else o++});$("s1").textContent=p;$("s2").textContent=a;$("s3").textContent=o;
+document.querySelectorAll(".item button").forEach(b=>b.onclick=()=>{const x=data.find(i=>i.id==b.dataset.id),who=$("partner").value,valid= x.lane==="people"?PEOPLE.includes(who):FARMS.includes(who);if(!valid){alert("Choose the matching organisation type in “Claim as”.");return}x.by=who;save();render()});showVerdict()}
+document.querySelectorAll("[data-src]").forEach(b=>b.onclick=()=>{state.src=b.dataset.src;document.querySelectorAll("[data-src]").forEach(c=>c.setAttribute("aria-pressed",c===b));showVerdict()});
+document.querySelectorAll("[data-cond]").forEach(b=>b.onclick=()=>{state.cond=b.dataset.cond;document.querySelectorAll("[data-cond]").forEach(c=>c.setAttribute("aria-pressed",c===b));showVerdict()});
+["hrs","qty"].forEach(id=>$(id).addEventListener("input",showVerdict));fillPartners();render();
+</script></body></html>
